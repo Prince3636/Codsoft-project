@@ -1,0 +1,143 @@
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+
+char boardnumber[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
+
+int choice_of_user;
+int row, column;
+char turn_at_that_time = 'X';
+bool draw = false;
+
+void tic_tac_board()
+{
+
+    cout << "PLAYER - 1 [X]PLAYER - 2 [O]" << endl;
+    cout << "     |     |     " << endl;
+    cout << "  " << boardnumber[0][0] << "  | " << boardnumber[0][1] << "   |  " << boardnumber[0][2] << " " << endl;
+    cout << "_____|_____|_____" << endl;
+    cout << "     |     |     " << endl;
+    cout << "  " << boardnumber[1][0] << "  | " << boardnumber[1][1] << "   |  " << boardnumber[1][2] << " " << endl;
+    cout << "_____|_____|_____" << endl;
+    cout << "     |     |     " << endl;
+    cout << " " << boardnumber[2][0] << "   | " << boardnumber[2][1] << "   |  " << boardnumber[2][2] << " " << endl;
+    cout << "     |     |     " << endl;
+}
+
+void player_turn()
+{
+    if (turn_at_that_time == 'X')
+    {
+        cout << "Player - 1 [X] turn_at_that_time : " << endl;
+    }
+    else if (turn_at_that_time == 'O')
+    {
+        cout << "Player - 2 [O] turn_at_that_time : " << endl;
+    }
+
+    cin >> choice_of_user;
+
+    switch (choice_of_user)
+    {
+    case 1:
+        row = 0;
+        column = 0;
+        break;
+    case 2:
+        row = 0;
+        column = 1;
+        break;
+    case 3:
+        row = 0;
+        column = 2;
+        break;
+    case 4:
+        row = 1;
+        column = 0;
+        break;
+    case 5:
+        row = 1;
+        column = 1;
+        break;
+    case 6:
+        row = 1;
+        column = 2;
+        break;
+    case 7:
+        row = 2;
+        column = 0;
+        break;
+    case 8:
+        row = 2;
+        column = 1;
+        break;
+    case 9:
+        row = 2;
+        column = 2;
+        break;
+    default:
+        cout << "Not a valid Move";
+    }
+
+    if (turn_at_that_time == 'X' && boardnumber[row][column] != 'X' && boardnumber[row][column] != 'O')
+    {
+
+        boardnumber[row][column] = 'X';
+        turn_at_that_time = 'O';
+    }
+    else if (turn_at_that_time == 'O' && boardnumber[row][column] != 'X' && boardnumber[row][column] != 'O')
+    {
+
+        boardnumber[row][column] = 'O';
+        turn_at_that_time = 'X';
+    }
+    else
+    {
+
+        cout << "Box already filled! Please choose another!!";
+        player_turn();
+    }
+
+    tic_tac_board();
+}
+
+bool gameover()
+{
+
+    for (int i = 0; i < 3; i++)
+        if (boardnumber[i][0] == boardnumber[i][1] && boardnumber[i][0] == boardnumber[i][2] || boardnumber[0][i] == boardnumber[1][i] && boardnumber[0][i] == boardnumber[2][i])
+            return false;
+
+    if (boardnumber[0][0] == boardnumber[1][1] && boardnumber[0][0] == boardnumber[2][2] || boardnumber[0][2] == boardnumber[1][1] && boardnumber[0][2] == boardnumber[2][0])
+        return false;
+
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (boardnumber[i][j] != 'X' && boardnumber[i][j] != 'O')
+                return true;
+
+    draw = true;
+    return false;
+}
+
+int main()
+{
+    cout << "Tic Tac Toe Game" << endl;
+    cout << "Two Player Game" << endl;
+    while (gameover())
+    {
+        tic_tac_board();
+        player_turn();
+        gameover();
+    }
+    if (turn_at_that_time == 'X' && draw == false)
+    {
+        cout << "Player with 'X' has won the game" << endl;
+    }
+    else if (turn_at_that_time == 'O' && draw == false)
+    {
+        cout << "Player with 'O' has won the game" << endl;
+    }
+    else
+        cout << "Draw" << endl;
+}
